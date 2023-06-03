@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Art.Models;
+using Art.Models.Entities;
 
 namespace Art.Controllers;
 
@@ -13,9 +14,15 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    PmitLn2oqDb0001Context db=new PmitLn2oqDb0001Context();
+
     public IActionResult Index()
     {
-        return View();
+        var model=new IndexViewModel()
+        {
+            Site=db.Sites!.First()
+        };
+        return View(model);
     }
 
     [Route("/contact")]
