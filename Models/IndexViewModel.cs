@@ -6,4 +6,5 @@ public class IndexViewModel
 {
     
     public Site? Site {get; set;}
+    
 }
