@@ -55,7 +55,7 @@ public partial class PmitLn2oqDb0001Context : DbContext
                 .HasColumnType("int(11)")
                 .HasColumnName("read");
             entity.Property(e => e.Subtitle)
-                .HasMaxLength(250)
+                .HasMaxLength(500)
                 .HasColumnName("subtitle");
             entity.Property(e => e.Title)
                 .HasMaxLength(250)
@@ -92,6 +92,9 @@ public partial class PmitLn2oqDb0001Context : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(250)
                 .HasColumnName("name");
+            entity.Property(e => e.Page)
+                .HasColumnType("int(11)")
+                .HasColumnName("page");
             entity.Property(e => e.Title)
                 .HasMaxLength(250)
                 .HasColumnName("title");

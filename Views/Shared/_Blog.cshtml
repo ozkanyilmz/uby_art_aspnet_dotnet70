@@ -1,19 +1,40 @@
 @model Art.Models.IndexViewModel
 
+@{
+
+    int currentPage=1;
+
+    var sessionCurrentPage=ViewContext.HttpContext.Session.GetInt32("currentPage");
+
+    if (sessionCurrentPage!=null)
+    {
+        currentPage=int.Parse(sessionCurrentPage.ToString()!);
+    }
+
+    int defaultPageCount=Model.Site!.Page; //her sayfadaki ürün adedi - sayfa başı listelenecek ürün adedi
+    int pageCount=Model.Blogs!.Count(); //blog tablosundaki kayıt adedi
+    int mod=pageCount%defaultPageCount; //blog tablosundaki kayıt adedinin sayfa başı ürün adedine bölümünde kalan
+    int page=pageCount/defaultPageCount; //listelenecek sayfa adedi
+
+    if (mod>0)
+    {
+        page++;
+    }
+}
+
+
 
 <div id="colorlib-container">
     <div class="container">
+        
         @if (Model.Blogs!=null)
         {
             
         
         <div class="row row-pb-md">
 
-            @foreach (var item in Model.Blogs)
+            @foreach (var item in Model.Blogs.Skip((currentPage-1)*defaultPageCount).Take(defaultPageCount))
             {
-                
-            
-
             <div class="col-md-4">
                 <div class="blog-entry">
                     <div class="blog-img">
@@ -38,14 +59,41 @@
 
         <div class="row">
             <div class="col-md-12 text-center">
+                @if (page>1)
+                {
+                    //sayfa adedi 1den büyük değilse sayfalamaya gerek yok
+                
                 <ul class="pagination">
-                    <li class="disabled"><a href="#">&laquo;</a></li>
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">&raquo;</a></li>
+                    <li class='@(currentPage==1?"disabled":"")'>
+
+                    @if (currentPage==1)
+                    {
+                        <a>&laquo;</a>
+                    } else
+                    {
+                        <a href="~/@(currentPage-1)">&laquo;</a>
+                    }
+
+                    </li>
+
+
+                    @for (int i = 1; i <= page; i++)
+                    {
+                        <li class='@(currentPage==i?"active":"")'><a href="~/@i">@i</a></li>
+                    }
+                    
+                    <li class='@(currentPage==page?"disabled":"")'>
+                        
+                        @if (currentPage==page)
+                        {
+                            <a>&raquo;</a>
+                        } else
+                        {
+                            <a href="~/@(currentPage+1)">&raquo;</a>
+                        }
+                        </li>
                 </ul>
+                }
             </div>
         </div>
     
