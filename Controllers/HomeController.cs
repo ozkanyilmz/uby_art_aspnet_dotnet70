@@ -79,7 +79,8 @@ public class HomeController : Controller
         var model=new IndexViewModel()
         {
             Site=db.Sites!.First(),
-            
+            Blog=db.Blogs!.FirstOrDefault(x=>x.Isview==true&&x.Id==id),
+            Blogs=db.Blogs!.OrderByDescending(x=>x.Id).Where(x=>x.Isview==true).ToList()
         };
         return View(model);
     }
